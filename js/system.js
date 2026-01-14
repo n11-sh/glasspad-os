@@ -1,4 +1,4 @@
-/* CLOCK CDMX */
+/* CLOCK */
 function updateClock() {
   const now = new Date().toLocaleTimeString("es-MX", {
     timeZone: "America/Mexico_City",
@@ -69,6 +69,18 @@ document.querySelectorAll(".control.minimize").forEach(btn => {
   btn.addEventListener("click", e => {
     const win = e.target.closest(".window");
     win.classList.toggle("hidden");
+    saveState();
+  });
+});
+
+/* DOCK */
+document.querySelectorAll(".dock-item").forEach(item => {
+  item.addEventListener("click", () => {
+    const id = item.dataset.open;
+    const win = document.querySelector(`.window[data-id="${id}"]`);
+    if (!win) return;
+    win.classList.remove("hidden");
+    win.style.zIndex = Date.now();
     saveState();
   });
 });
