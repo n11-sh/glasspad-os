@@ -13,7 +13,6 @@
   --radius: 18px;
   --text: #f6f7fb;
   --shadow: 0 20px 40px rgba(0,0,0,0.25);
-  --accent: #9ad6ff;
 }
 
 * {
@@ -26,7 +25,7 @@ body {
   margin: 0;
   width: 100vw;
   height: 100vh;
-  background: url("wallpaper.jpg") center/cover no-repeat fixed;
+  background: url("assets/wallpaper.jpg") center/cover no-repeat fixed;
   overflow: hidden;
   color: var(--text);
 }
@@ -71,12 +70,6 @@ body {
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   overflow: hidden;
-  animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
 }
 
 .titlebar {
@@ -100,13 +93,11 @@ body {
   white-space: pre-wrap;
 }
 
-/* ASCII */
 .ascii {
   font-family: monospace;
   font-size: 12px;
 }
 
-/* Widget fake */
 .widget {
   position: absolute;
   bottom: 30px;
@@ -120,16 +111,6 @@ body {
   box-shadow: var(--shadow);
   font-size: 12px;
 }
-
-.widget h4 {
-  margin: 0 0 6px 0;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.soft {
-  opacity: 0.8;
-}
 </style>
 </head>
 
@@ -142,7 +123,7 @@ body {
 
 <div id="desktop">
 
-  <div class="window" style="top:80px; left:60px;">
+  <div class="window" data-id="cat" style="top:80px; left:60px;">
     <div class="titlebar"><span>gatito.txt</span></div>
     <div class="content ascii">
  /\_/\  
@@ -151,12 +132,11 @@ body {
     </div>
   </div>
 
-  <div class="window" style="top:140px; left:400px; width:320px;">
+  <div class="window" data-id="notes" style="top:140px; left:420px;">
     <div class="titlebar"><span>notas</span></div>
-    <div class="content soft">
+    <div class="content">
  sistema falso ✔  
  bonito ✔  
- inútil ❌  
  suficiente ✔  
 
  静かな心  
@@ -164,9 +144,9 @@ body {
     </div>
   </div>
 
-  <div class="window" style="top:360px; left:120px; width:260px;">
+  <div class="window" data-id="status" style="top:360px; left:120px;">
     <div class="titlebar"><span>estado</span></div>
-    <div class="content soft">
+    <div class="content">
  batería: desconocida  
  internet: opcional  
  ánimo: estable  
@@ -174,46 +154,12 @@ body {
   </div>
 
   <div class="widget">
-    <h4>widget inútil</h4>
-    hoy todo va a estar
-    razonablemente bien.
+    hoy todo va a estar  
+ razonablemente bien.
   </div>
 
 </div>
 
-<script>
-/* Clock CDMX */
-function updateClock() {
-  const now = new Date().toLocaleTimeString("es-MX", {
-    timeZone: "America/Mexico_City",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-  document.getElementById("clock").textContent = now;
-}
-setInterval(updateClock, 1000);
-updateClock();
-
-/* Drag windows */
-let active = null, offsetX = 0, offsetY = 0;
-
-document.querySelectorAll(".titlebar").forEach(bar => {
-  bar.addEventListener("mousedown", e => {
-    active = bar.parentElement;
-    offsetX = e.clientX - active.offsetLeft;
-    offsetY = e.clientY - active.offsetTop;
-    active.style.zIndex = Date.now();
-  });
-});
-
-document.addEventListener("mousemove", e => {
-  if (!active) return;
-  active.style.left = (e.clientX - offsetX) + "px";
-  active.style.top = (e.clientY - offsetY) + "px";
-});
-
-document.addEventListener("mouseup", () => active = null);
-</script>
-
+<script src="js/system.js"></script>
 </body>
 </html>
