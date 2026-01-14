@@ -21,10 +21,12 @@ const windows = document.querySelectorAll(".window");
 function saveState() {
   const state = {};
   windows.forEach(win => {
+    const contentId = win.querySelector(".content")?.id;
     state[win.dataset.id] = {
       top: win.style.top,
       left: win.style.left,
-      hidden: win.classList.contains("hidden")
+      hidden: win.classList.contains("hidden"),
+      content: contentId ? document.getElementById(contentId).innerHTML : undefined
     };
   });
   localStorage.setItem("glasspad-state", JSON.stringify(state));
@@ -40,6 +42,10 @@ function loadState() {
     win.style.top = data.top;
     win.style.left = data.left;
     if (data.hidden) win.classList.add("hidden");
+    if (data.content) {
+      const contentId = win.querySelector(".content")?.id;
+      if (contentId) document.getElementById(contentId).innerHTML = data.content;
+    }
   });
 }
 
@@ -85,6 +91,13 @@ document.querySelectorAll(".dock-item").forEach(item => {
   });
 });
 
+/* NOTES AUTOSAVE */
+const notes = document.getElementById("notes-content");
+notes.addEventListener("input", () => {
+  saveState();
+});
+
+/* MOUSE MOVE */
 document.addEventListener("mousemove", e => {
   if (!activeWindow) return;
   activeWindow.style.left = (e.clientX - offsetX) + "px";
